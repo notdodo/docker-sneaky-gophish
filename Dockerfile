@@ -1,6 +1,6 @@
 FROM golang:alpine
 
-RUN sed -i -e 's/v[[:digit:]]\.[[:digit:]]/edge/g' /etc/apk/repositories
+RUN sed -i -e 's/v[[:digit:]]\.[[:digit:]]*/edge/g' /etc/apk/repositories
 RUN apk update && apk upgrade
 RUN apk add --no-cache vim wget ca-certificates build-base git nginx
 
