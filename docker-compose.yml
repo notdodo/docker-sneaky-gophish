@@ -1,0 +1,40 @@
+---
+version: "3"
+
+services:
+  gophish-proxy:
+    image: nginx:alpine
+    volumes:
+      - ./proxies:/etc/nginx/conf.d/
+    ports:
+      - "8080:80"
+      - "8443:443"
+
+  gophish:
+    restart: always
+    image: gophish/gophish
+    depends_on:
+      - gophish-db
+    volumes:
+      - ./gophish/config.json:/opt/gophish/config.json
+    ports:
+      - 3333:3333
+      - 8080:80
+      - 8443:443
+    expose:
+      - 80
+      - 443
+
+  gophish-db:
+    image: mariadb:latest
+    restart: always
+    volumes:
+      - gophish-db:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD}"
+      MYSQL_USER: "${MYSQL_USER}"
+      MYSQL_PASSWORD: "${MYSQL_PASSWORD}"
+      MYSQL_DATABASE: "gophish"
+
+volumes:
+  gophish-db:
