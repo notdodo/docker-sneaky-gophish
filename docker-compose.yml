@@ -7,11 +7,11 @@ services:
     volumes:
       - ./proxies:/etc/nginx/conf.d/
     ports:
-      - "8080:80"
-      - "8443:443"
+      - "80:80"
+      - "443:443"
 
   gophish:
-    restart: always
+    restart: unless-stopped
     image: gophish/gophish
     depends_on:
       - gophish-db
@@ -27,7 +27,7 @@ services:
 
   gophish-db:
     image: mariadb:latest
-    restart: always
+    restart: unless-stopped
     volumes:
       - gophish-db:/var/lib/mysql
     environment:
