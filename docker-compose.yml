@@ -6,9 +6,11 @@ services:
     image: nginx:alpine
     volumes:
       - ./proxies:/etc/nginx/conf.d/
+      - ./ssl:/etc/nginx/ssl/
     ports:
       - "80:80"
       - "443:443"
+      - "3443:3443"
 
   gophish:
     restart: unless-stopped
@@ -17,13 +19,10 @@ services:
       - gophish-db
     volumes:
       - ./gophish/config.json:/opt/gophish/config.json
-    ports:
-      - 3333:3333
-      - 8080:80
-      - 8443:443
     expose:
       - 80
       - 443
+      - 3333
 
   gophish-db:
     image: mariadb:latest
