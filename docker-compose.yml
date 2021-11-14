@@ -8,32 +8,17 @@ services:
       - ./proxies:/etc/nginx/conf.d/
       - ./ssl:/etc/nginx/ssl/
     ports:
-      - "80:80"
-      - "443:443"
-      - "3443:3443"
+      - 80:80
+      - 443:443
+      - 3443:3443
+    environment:
+       - DOMAIN_NAME=goo-gle.xyz
 
   gophish:
     restart: unless-stopped
-    image: gophish/gophish
-    depends_on:
-      - gophish-db
+    build: .
     volumes:
       - ./gophish/config.json:/opt/gophish/config.json
     expose:
       - 80
-      - 443
       - 3333
-
-  gophish-db:
-    image: mariadb:latest
-    restart: unless-stopped
-    volumes:
-      - gophish-db:/var/lib/mysql
-    environment:
-      MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD}"
-      MYSQL_USER: "${MYSQL_USER}"
-      MYSQL_PASSWORD: "${MYSQL_PASSWORD}"
-      MYSQL_DATABASE: "gophish"
-
-volumes:
-  gophish-db:

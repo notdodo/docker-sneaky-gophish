@@ -1,7 +1,7 @@
 {
   "admin_server": {
     "listen_url": "0.0.0.0:3333",
-    "use_tls": false,
+    "use_tls": true,
     "cert_path": "gophish_admin.crt",
     "key_path": "gophish_admin.key"
   },
@@ -11,8 +11,8 @@
     "cert_path": "example.crt",
     "key_path": "example.key"
   },
-  "db_name": "mysql",
-  "db_path": "gophish:9h9O%gD7xVmW@(gophish-db:3306)/gophish?charset=utf8&parseTime=True&loc=UTC",
+  "db_name": "sqlite3",
+  "db_path": "gophish.db",
   "migrations_prefix": "db/db_",
   "contact_address": "",
   "logging": {
