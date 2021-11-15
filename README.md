@@ -1,5 +1,5 @@
 # docker-sneaky-gophish
-Docker for the latest gophish with stealth configuration from (sneaky_gophish)[https://github.com/puzzlepeaches/sneaky_gophish].
+Docker for the latest gophish with stealth configuration from [sneaky_gophish](https://github.com/puzzlepeaches/sneaky_gophish).
 
 ## Usage
 
