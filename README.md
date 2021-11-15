@@ -6,7 +6,6 @@ Docker for the latest gophish with stealth configuration from [sneaky_gophish](h
 1. Create your HTTPS certificate with:
    ````
    docker run -it --rm --name certbot -p 443:443 -p 80:80 -v "./ssl/:/etc/letsencrypt" -v "./var/lib/letsencrypt:/var/lib/letsencrypt" certbot/certbot certonly -d goo-gle.xyz -d www.goo-gle.xyz
-   ```
 3. Copy the private key to ./ssl/priv.key
 4. Copy the public key to ./ssl/cert.crt
 5. Edit the proxy configuration to match your domain editing `./proxies/goo-gle.xyz` (replace `goo-gle.xyz` with your domain)
