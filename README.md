@@ -10,5 +10,5 @@ Docker for the latest gophish with stealth configuration from [sneaky_gophish](h
 5. Run `docker-compose up -d`
 5. Run `docker-compose logs gophish` to check for errors and get the admin password
 5. Save the `admin` password printed in the logs
-6. Login to administrative interface on port https://<host-ip>:3443
+6. Login to administrative interface on port <https://\<host-ip\>:3443>
 7. The landing page will show up on ports 80 (it will redirect to HTTPS) and 443
