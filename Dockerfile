@@ -13,7 +13,7 @@ RUN gulp
 # Build Golang binary
 FROM golang:latest AS build-golang
 
-WORKDIR /go/src/github.com/gophish/gophis
+WORKDIR /go/src/github.com/gophish/gophish
 COPY --from=build-js /build/ ./
 
 # Stripping X-Gophish 
