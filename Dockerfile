@@ -2,13 +2,11 @@
 FROM node:latest AS build-js
 
 RUN npm install gulp gulp-cli -g
-
 RUN apt update && apt install git
 WORKDIR /build
 RUN git clone https://github.com/gophish/gophish .
 RUN npm install --only=dev
 RUN gulp
-
 
 # Build Golang binary
 FROM golang:latest AS build-golang
@@ -36,12 +34,10 @@ COPY ./files/phish.go ./controllers/phish.go
 
 RUN go get -v && go build -v
 
-
 # Runtime container
 FROM debian:stable
 
 RUN useradd -m -d /opt/gophish -s /bin/bash app
-
 RUN apt-get update && \
     apt-get install --no-install-recommends -y jq libcap2-bin && \
     apt-get clean && \
@@ -56,12 +52,6 @@ COPY ./files/404.html ./templates/
 RUN chown app. config.json
 
 RUN setcap 'cap_net_bind_service=+ep' /opt/gophish/gophish
-
-USER app
-RUN sed -i 's/127.0.0.1/0.0.0.0/g' config.json
-
-
-RUN touch config.json.tmp
 
 EXPOSE 3333 80
 
