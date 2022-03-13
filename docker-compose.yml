@@ -3,18 +3,18 @@ version: "3"
 
 services:
   gophish-proxy:
-    image: nginx:alpine
+    image: caddy:latest
+    restart: unless-stopped
     volumes:
-      - ./proxies:/etc/nginx/conf.d/
-      - ./ssl:/etc/nginx/ssl/
+      - ./caddy:/etc/caddy
     ports:
       - 80:80
       - 443:443
       - 3443:3443
 
   gophish:
-    restart: unless-stopped
     build: .
+    restart: unless-stopped
     volumes:
       - ./gophish/config.json:/opt/gophish/config.json
     expose:

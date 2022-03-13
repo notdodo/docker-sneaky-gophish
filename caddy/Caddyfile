@@ -1,0 +1,14 @@
+gophish.goo-gle.xyz:3443 {
+	reverse_proxy gophish:3333 {
+		header_up X-Real-IP {remote}
+		header_up X-Forwarded-For {remote}
+		header_up -Referer
+		header_up -Host
+		header_up -X-Forwarded-Proto
+	}
+}
+
+goo-gle.xyz {
+	reverse_proxy gophish:80
+	reverse_proxy gophish:443
+}
