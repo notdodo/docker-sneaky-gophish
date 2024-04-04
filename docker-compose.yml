@@ -4,19 +4,75 @@ version: "3"
 services:
   gophish-proxy:
     image: caddy:latest
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    cap_add:
+      - CAP_NET_BIND_SERVICE
+      - CAP_NET_RAW
     restart: unless-stopped
+    networks:
+      - gophish
     volumes:
       - ./caddy:/etc/caddy
     ports:
-      - 80:80
-      - 443:443
-      - 3443:3443
+      - "0.0.0.0:80:80"
+      - "0.0.0.0:443:443"
+      - "0.0.0.0:3443:3443"
+
+  mysql:
+    image: mysql:latest
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    cap_add:
+      - CAP_DAC_OVERRIDE
+      - CAP_SETGID
+      - CAP_SETUID
+    restart: always
+    networks:
+      - db
+    environment:
+      MYSQL_RANDOM_ROOT_PASSWORD: true
+      MYSQL_ONETIME_PASSWORD: true
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+    expose:
+      - 3306
+    volumes:
+      - ./mysql/gophish.cnf:/etc/mysql/conf.d/gophish.cnf
 
   gophish:
     build: .
+    cap_drop:
+      - ALL
+    cap_add:
+      - CAP_DAC_OVERRIDE
+      - CAP_NET_RAW
+      - CAP_NET_BIND_SERVICE
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - db
+      - gophish
+    environment:
+      ADMIN_LISTEN_URL: 0.0.0.0:3333
+      ADMIN_USE_TLS: false
+      DB_NAME: mysql
+      DB_FILE_PATH: ${MYSQL_USER}:${MYSQL_PASSWORD}@(mysql:3306)/${MYSQL_DATABASE}?charset=utf8&parseTime=True&loc=UTC
     restart: unless-stopped
-    volumes:
-      - ./gophish/config.json:/opt/gophish/config.json
     expose:
       - 80
       - 3333
+    ports:
+      - "127.0.0.1:3333:3333"
+    depends_on:
+      - mysql
+      - gophish-proxy
+
+networks:
+  db:
+  gophish:
